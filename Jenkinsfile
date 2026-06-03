@@ -58,7 +58,7 @@ pipeline {
                 echo '健康检查...'
                 script {
                     // 模拟健康检查（后面改成真正的 curl 探测）
-                    def healthCheckPassed = true
+                    def healthCheckPassed = false
                     
                     if (healthCheckPassed) {
                         echo '✅ 健康检查通过'
