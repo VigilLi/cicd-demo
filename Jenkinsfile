@@ -27,7 +27,7 @@ pipeline {
                 sh '''
                     docker save cicd-demo:latest -o /tmp/cicd-demo.tar
                     sudo k3s ctr images import /tmp/cicd-demo.tar
-                    rm -f /tmp/cicd-demo.tar
+                    sudo rm -f /tmp/cicd-demo.tar
                 '''
             }
         }
