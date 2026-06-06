@@ -21,11 +21,22 @@ pipeline {
             }
         }
         
+        stage('Import to K3s') {
+            steps {
+                echo '导入镜像到 K3s...'
+                sh '''
+                    docker save cicd-demo:latest -o /tmp/cicd-demo.tar
+                    sudo k3s ctr images import /tmp/cicd-demo.tar
+                    rm -f /tmp/cicd-demo.tar
+                '''
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 echo '部署到 K3s...'
                 sh '''
-                    sudo kubectl set image deployment/cicd-demo nginx=cicd-demo:latest --record
+                    sudo kubectl set image deployment/cicd-demo nginx=cicd-demo:latest
                     sudo kubectl rollout status deployment/cicd-demo --timeout=60s
                 '''
             }
@@ -34,7 +45,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 echo '健康检查...'
-                sh 'curl -f http://localhost:30080 || exit 1'
+                sh 'sleep 3 && curl -f http://localhost:30080 || exit 1'
             }
         }
     }
