@@ -45,7 +45,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 echo '健康检查...'
-                sh 'sleep 3 && curl -f http://localhost:30080 || exit 1'
+                sh 'sleep 3 && curl -f http://localhost:30080/not-exist || exit 1'
             }
         }
     }
